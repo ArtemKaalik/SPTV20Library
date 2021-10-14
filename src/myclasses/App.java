@@ -7,6 +7,10 @@ package myclasses;
 
 import entity.Author;
 import entity.Book;
+import entity.History;
+import entity.Reader;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -31,5 +35,28 @@ public class App {
                             book.getAuthors()[0].getLastName(),
                             book.getReleaseYear()
                 );
+        Reader reader = new Reader();
+        reader.setFirstName("Ivan");
+        reader.setLastName("Ivanov");
+        reader.setPhone(562375);
+        System.out.printf("Создан пользователь: %s %s, с телефоном: %s%n",
+                           reader.getFirstName(),
+                           reader.getLastName(),
+                           reader.getPhone()
+        );
+        History history = new History();
+        history.setBook(book);
+        history.setReader(reader);
+        Calendar c = new GregorianCalendar();
+        history.setGivenBook(c.getTime());
+        System.out.printf("Читатель %s %s взял читать книгу \"%s\"%n, %s%n"
+                ,history.getReader().getFirstName()
+                ,history.getReader().getLastName()
+                ,history.getBook().getBookName()
+                ,history.getGivenBook()
+        );
+        
+        
+        
     }
 }
