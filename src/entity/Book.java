@@ -5,6 +5,8 @@
  */
 package entity;
 
+
+
 /**
  *
  * @author ArTIK
@@ -37,7 +39,5 @@ public class Book {
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
-    
-    
     
 }

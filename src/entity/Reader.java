@@ -12,9 +12,8 @@ package entity;
 public class Reader {
     private String firstName;
     private String lastName;
-    private int phone;
-    
-    public Reader() {
+    private String phone;
+    public Reader(){
         
     }
 
@@ -34,12 +33,14 @@ public class Reader {
         this.lastName = lastName;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
     
 }
+    
+  
