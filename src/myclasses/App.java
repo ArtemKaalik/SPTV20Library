@@ -19,7 +19,7 @@ import tools.SaverToFiles;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 public class App {
     private Scanner scanner = new Scanner(System.in);
@@ -30,7 +30,8 @@ public class App {
     
     public App(){
         books = saverToFiles.loadBooks();
-        
+        readers = saverToFiles.loadReaders();
+        histories = saverToFiles.loadHistories();
     }
     
     public void run(){
@@ -67,7 +68,6 @@ public class App {
                    break;
                case 6:
                    printListReaders();
-                   
                    break;
                case 7:
                    printListGivenBooks();
@@ -79,6 +79,7 @@ public class App {
        }while("yes".equals(repeat));
        System.out.println("Пока! :)");
     }
+    
     private boolean printListGivenBooks(){
         System.out.println("Список выданных книг: ");
                    int n = 0;
@@ -87,8 +88,8 @@ public class App {
                            System.out.printf("%d. Книгу \"%s\" читает %s %s%n"
                                    ,i+1
                                    ,histories.get(i).getBook().getBookName()
-                                   ,histories.get(i).getReader().getFirstName()
-                                   ,histories.get(i).getReader().getLastName()
+                                   ,histories.get(i).getReader().getFirstname()
+                                   ,histories.get(i).getReader().getLastname()
                            );
                            n++;
                        }
@@ -103,14 +104,15 @@ public class App {
     private void addReader() {
         Reader reader = new Reader();
         System.out.print("Введите имя читателя: ");
-        reader.setFirstName(scanner.nextLine());
+        reader.setFirstname(scanner.nextLine());
         System.out.print("Введите фамилию читателя: ");
-        reader.setLastName(scanner.nextLine());
+        reader.setLastname(scanner.nextLine());
         System.out.print("Введите телефон читателя: ");
         reader.setPhone(scanner.nextLine());
         System.out.println("Читатель инициирован: "+reader.toString());
         readers.add(reader);
-       }   
+        saverToFiles.saveReaders(readers);
+    }
 
     private void addBook() {
        Book book = new Book();
@@ -134,8 +136,7 @@ public class App {
        book.setReleaseYear(scanner.nextInt());scanner.nextLine();
        System.out.println("Книга инициирована: "+book.toString());    
        books.add(book);
-        SaverToFiles saverToFiles = new SaverToFiles();
-        saverToFiles.saveBooks(books);
+       saverToFiles.saveBooks(books);
     }
 
     private void printListBooks() {
@@ -174,8 +175,8 @@ public class App {
           if(readers.get(i) != null){
                System.out.printf("%d. %s. %s. Телефон: %s.%n"
                        ,i+1
-                       ,readers.get(i).getFirstName()
-                       ,readers.get(i).getLastName()
+                       ,readers.get(i).getFirstname()
+                       ,readers.get(i).getLastname()
                        ,readers.get(i).getPhone()
                );
           }
@@ -188,12 +189,8 @@ public class App {
        history.setReader(readers.get(numberReader - 1));
        Calendar c = new GregorianCalendar();
        history.setGivenBook(c.getTime());
-       for (int i = 0; i < histories.size(); i++) {
-           if(histories.get(i) == null){
-               histories.set(i, history);
-               break;
-           }
-       }
+       histories.add(history);
+       saverToFiles.saveHistories(histories);
        System.out.println("--------------------");
     }
 
@@ -206,6 +203,7 @@ public class App {
         int numberHistory = scanner.nextInt(); scanner.nextLine();
         Calendar c = new GregorianCalendar();
         histories.get(numberHistory - 1).setReturnBook(c.getTime());
+        saverToFiles.saveHistories(histories);
     }
 
     private void printListReaders() {
@@ -214,8 +212,8 @@ public class App {
             if(readers.get(i) != null){
                 System.out.printf("%d. %s %s. тел.: %s%n"
                        ,i+1
-                       ,readers.get(i).getFirstName()
-                       ,readers.get(i).getLastName()
+                       ,readers.get(i).getFirstname()
+                       ,readers.get(i).getLastname()
                        ,readers.get(i).getPhone()
                 );
             }
