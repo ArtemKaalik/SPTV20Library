@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 public class Book implements Serializable{
     private String bookName;

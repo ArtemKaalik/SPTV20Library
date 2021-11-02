@@ -9,6 +9,10 @@ import entity.Author;
 import entity.Book;
 import entity.History;
 import entity.Reader;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -19,7 +23,7 @@ import tools.SaverToFiles;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 public class App {
     private Scanner scanner = new Scanner(System.in);
@@ -46,7 +50,8 @@ public class App {
            System.out.println("5: Вернуть книгу в библиотеку");
            System.out.println("6: Список читателей");
            System.out.println("7: Список выданных книг");
-           int task = scanner.nextInt(); scanner.nextLine();
+           int task = getNumber();
+           
            switch (task) {
                case 0:
                    repeat = "no";
@@ -73,7 +78,7 @@ public class App {
                    printListGivenBooks();
                    break;
                default:
-                   System.out.println("Выберите номер из списка!");
+                   System.out.println();
            }
            
        }while("yes".equals(repeat));
@@ -84,13 +89,13 @@ public class App {
         System.out.println("Список выданных книг: ");
                    int n = 0;
                    for (int i = 0; i < histories.size(); i++) {
-                       //печатаем книгу если она !null, выдана и 
-                       if(histories.get(i) != null
+                       //печатем книгу если она !null, выдана и 
+                       if(histories.get(i) != null 
                                && histories.get(i).getReturnBook() == null
                                && (
-                                   histories.get(i).getBook().getCount()
-                                  < histories.get(i).getBook().getQuantity()+1
-                                 )
+                                     histories.get(i).getBook().getCount() 
+                                    < histories.get(i).getBook().getQuantity()+1
+                                  )
                                ){
                            System.out.printf("%d. Книгу \"%s\" читает %s %s%n"
                                    ,i+1
@@ -126,7 +131,7 @@ public class App {
        System.out.print("Введите название книги: ");
        book.setBookName(scanner.nextLine());
        System.out.print("Введите количество авторов книги: ");
-       int countAuthors = (scanner.nextInt());scanner.nextLine();
+       int countAuthors = getNumber();
        Author[] authors = new Author[countAuthors];
        for (int i = 0; i < countAuthors; i++) {
            Author author = new Author();
@@ -135,14 +140,14 @@ public class App {
            System.out.print("Введите фамилию автора: ");
            author.setLastName(scanner.nextLine());
            System.out.print("Введите год рождения автора: ");
-           author.setBirthYear(scanner.nextInt());scanner.nextLine();
+           author.setBirthYear(getNumber());
            authors[i] = author;
        }
        book.setAuthors(authors);
        System.out.print("Введите год издания книги: ");
-       book.setReleaseYear(scanner.nextInt());scanner.nextLine();
+       book.setReleaseYear(getNumber());
        System.out.print("Введите количество экземпляров книги: ");
-       book.setQuantity(scanner.nextInt());scanner.nextLine();
+       book.setQuantity(getNumber());
        book.setCount(book.getQuantity());
        System.out.println("Книга инициирована: "+book.toString());    
        books.add(book);
@@ -152,21 +157,43 @@ public class App {
     private void printListBooks() {
         System.out.println("Список книг: ");
         for (int i = 0; i < books.size(); i++) {
-            if(books.get(i) != null
-                    && books.get(i).getCount()> 0
-                    && books.get(i).getCount()< books.get(i).getQuantity() + 1){
+            if(books.get(i) != null 
+                    && books.get(i).getCount() > 0
+                    && books.get(i).getCount() < books.get(i).getQuantity() + 1){
                 System.out.printf("%d. %s. %s. %d.%n"
                        ,i+1
                        ,books.get(i).getBookName()
                        ,Arrays.toString(books.get(i).getAuthors())
                        ,books.get(i).getReleaseYear()
-                       ,showReturnDateBook(books.get(i)//Текущая дата - .....
+               );
+           }else if(books.get(i) != null){
+                System.out.printf("%d. %s. %s. %d. - все экземпляры на руках до: %s%n"
+                       ,i+1
+                       ,books.get(i).getBookName()
+                       ,Arrays.toString(books.get(i).getAuthors())
+                       ,books.get(i).getReleaseYear()
+                       ,showReturnDateBook(books.get(i))//"5.10.2021"
                );
            }
 
        }
     }
-
+    private String showReturnDateBook(Book book){
+        LocalDate givenDate = null;
+        for (int i = 0; i < histories.size(); i++) {
+            if((histories.get(i).getBook().getBookName()).equals(book.getBookName()) && histories.get(i).getReturnBook() == null){
+                if(givenDate == null){
+                    givenDate= histories.get(i).getGivenBook().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                }
+                if(givenDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() < histories.get(i).getGivenBook().getTime()){
+                    givenDate= histories.get(i).getGivenBook().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                }
+            }
+        }
+        LocalDate returnDateBook = givenDate.plusDays(14);
+        return  returnDateBook.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        
+    }
     private void givenBook() {
         System.out.println("---- Выдать книгу ----");
        System.out.println("Список книг: ");
@@ -182,13 +209,12 @@ public class App {
                n++;
           }
        }
-       if (n < 1){
+       if(n < 1){
            System.out.println("Нет книг для чтения");
            return;
        }
        System.out.println("Выберите номер книги: ");
-       int numberBook = scanner.nextInt(); scanner.nextLine();
-
+       int numberBook = getNumber();
        System.out.println("Список читателей: ");
        for (int i = 0; i < readers.size(); i++) {
           if(readers.get(i) != null){
@@ -201,15 +227,14 @@ public class App {
           }
        }
        System.out.println("Выберите номер читателя: ");
-       int numberReader = scanner.nextInt(); scanner.nextLine();
-
+       int numberReader = getNumber();
        History history = new History();
        history.setBook(books.get(numberBook - 1));
        history.setReader(readers.get(numberReader - 1));
        Calendar c = new GregorianCalendar();
        history.setGivenBook(c.getTime());
        histories.add(history);
-       history.getBook().setCount(history.getBook().getCount() -1);
+       history.getBook().setCount(history.getBook().getCount() - 1);
        saverToFiles.saveBooks(books);
        saverToFiles.saveHistories(histories);
        System.out.println("--------------------");
@@ -221,20 +246,30 @@ public class App {
            return;
         }
         System.out.print("Выберите номер возвращаемой книги: ");
-        int numberHistory = scanner.nextInt(); scanner.nextLine();
+        int numberHistory = getNumber();
         Calendar c = new GregorianCalendar();
         histories.get(numberHistory - 1).setReturnBook(c.getTime());
-        histories.get(numberHistory - 1).getBook().setCount(
-                 histories.get(numberHistory - 1)
-                         .getBook()
-                         .getCount() + 1
-        );
+//        histories.get(numberHistory - 1).getBook().setCount(
+//           histories.get(numberHistory - 1)
+//                    .getBook()
+//                    .getCount() + 1
+//        );
+        // Здесь объясняется что значит передача по ссылке в Java
+        // https://coderoad.ru/40480/%D0%AD%D1%82%D0%BE-Java-pass-by-reference-%D0%B8%D0%BB%D0%B8-pass-by-value
+        //
+        for (int i = 0; i < books.size(); i++) {
+            if(books.get(i).getBookName().equals(histories.get(numberHistory - 1).getBook().getBookName())){
+                books.get(i).setCount(books.get(i).getCount() + 1);
+                break;
+            }
+            
+        }
         saverToFiles.saveBooks(books);
         saverToFiles.saveHistories(histories);
     }
 
     private void printListReaders() {
-        System.out.println("---- Список читателей -----");
+        System.out.println("----- Список читателей -----");
         for (int i = 0; i < readers.size(); i++) {
             if(readers.get(i) != null){
                 System.out.printf("%d. %s %s. тел.: %s%n"
@@ -245,5 +280,18 @@ public class App {
                 );
             }
         }
+    }
+
+    private int getNumber() {
+        int number;
+        do{
+           String strNumber = scanner.nextLine();
+           try {
+               number = Integer.parseInt(strNumber);
+               return number;
+           } catch (Exception e) {
+               System.out.println("Введено \""+strNumber+"\". Выбирайте номер: ");
+           }
+       }while(true);
     }
 }
