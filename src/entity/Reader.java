@@ -5,32 +5,34 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author ArTIK
  */
-public class Reader {
-    private String firstName;
-    private String lastName;
+public class Reader implements Serializable{
+    private String firstname;
+    private String lastname;
     private String phone;
-    public Reader(){
-        
+
+    public Reader() {
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getPhone() {
@@ -40,7 +42,14 @@ public class Reader {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    @Override
+    public String toString() {
+        return "Reader{" 
+                + "firstname=" + firstname 
+                + ", lastname=" + lastname 
+                + ", phone=" + phone 
+                + '}';
+    }
     
 }
-    
-  

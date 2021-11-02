@@ -5,17 +5,21 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author ArTIK
  */
-public class History {
+public class History implements Serializable{
     private Book book;
     private Reader reader;
     private Date givenBook;
     private Date returnBook;
+
+    public History() {
+    }
 
     public Book getBook() {
         return book;
@@ -49,7 +53,5 @@ public class History {
         this.returnBook = returnBook;
     }
     
-    
-    
-    
+            
 }

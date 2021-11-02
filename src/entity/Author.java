@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author ArTIK
  */
-public class Author implements Serializable {
+public class Author implements Serializable{
     private String firstName;
     private String lastName;
     private int birthYear;
@@ -39,6 +39,10 @@ public class Author implements Serializable {
     public void setBirthYear(int birthYear) {
         this.birthYear = birthYear;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Author{" + "firstName=" + firstName + ", lastName=" + lastName + ", birthYear=" + birthYear + '}';
+    }
     
 }

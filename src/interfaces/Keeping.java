@@ -15,10 +15,10 @@ import java.util.List;
  * @author ArTIK
  */
 public interface Keeping {
-    public void saveBook(List<Book> books);
+    public void saveBooks(List<Book> books);
     public List<Book> loadBooks();
     public void saveReaders(List<Reader> readers);
     public List<Reader> loadReaders();
-    public void saveHistories(List<History> readers);
+    public void saveHistories(List<History> histories);
     public List<History> loadHistories();
 }
