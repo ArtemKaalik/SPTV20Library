@@ -6,13 +6,20 @@
 package facade;
 
 import entity.Reader;
+import javax.persistence.EntityManager;
+import tools.Singleton;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 public class ReaderFacade extends AbstractFacade<Reader>{
     
+    @Override
+    protected EntityManager getEntityManager() {
+        Singleton singleton = Singleton.getInstance();
+        return singleton.getEntityManager();
+    }
     public ReaderFacade(Class<Reader> entityClass) {
         super(entityClass);
     }

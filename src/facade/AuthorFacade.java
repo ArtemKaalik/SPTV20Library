@@ -6,13 +6,20 @@
 package facade;
 
 import entity.Author;
+import javax.persistence.EntityManager;
+import tools.Singleton;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 public class AuthorFacade extends AbstractFacade<Author>{
-    
+       
+    @Override
+    protected EntityManager getEntityManager() {
+        Singleton singleton = Singleton.getInstance();
+        return singleton.getEntityManager();
+    }
     public AuthorFacade(Class<Author> entityClass) {
         super(entityClass);
     }

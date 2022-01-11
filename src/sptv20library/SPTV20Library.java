@@ -9,7 +9,7 @@ import myclasses.App;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 public class SPTV20Library {
 

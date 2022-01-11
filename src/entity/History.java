@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 @Entity
 public class History implements Serializable{

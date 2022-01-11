@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  *
- * @author ArTIK
+ * @author user
  */
 public interface Keeping {
     public void saveBooks(List<Book> books);
